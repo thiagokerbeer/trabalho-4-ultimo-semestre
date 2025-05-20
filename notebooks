@@ -1,0 +1,118 @@
+📘 Notebook 1: nlp.ipynb — Tarefas básicas de NLP com spaCy
+python
+Copiar
+Editar
+# Instalação do spaCy
+!pip install spacy
+
+# Baixando o modelo de linguagem em inglês
+import spacy.cli
+spacy.cli.download("en_core_web_sm")
+
+# Carregando o modelo
+import spacy
+nlp = spacy.load("en_core_web_sm")
+
+# Texto de exemplo
+texto = "Apple is looking at buying U.K. startup for $1 billion"
+
+# Processando o texto
+doc = nlp(texto)
+
+# Exibindo tokens, POS e dependências
+for token in doc:
+    print(f"TOKEN: {token.text}, POS: {token.pos_}, MORFOLOGIA: {token.morph}, DEP: {token.dep_}")
+📗 Notebook 2: ner.ipynb — Reconhecimento de Entidades (NER)
+python
+Copiar
+Editar
+# Instalação das bibliotecas necessárias
+!pip install spacy
+!pip install pandas
+!pip install beautifulsoup4
+
+# Baixando o modelo em inglês
+import spacy.cli
+spacy.cli.download("en_core_web_sm")
+
+# Importações
+import spacy
+import pandas as pd
+from bs4 import BeautifulSoup
+from spacy import displacy
+
+# Carregando o modelo
+nlp = spacy.load("en_core_web_sm")
+
+# Texto de exemplo
+texto = "Barack Obama was born in Hawaii. He was elected president in 2008."
+
+# Processando o texto
+doc = nlp(texto)
+
+# Exibindo entidades
+for ent in doc.ents:
+    print(ent.text, ent.label_)
+
+# Visualizando entidades
+displacy.render(doc, style="ent", jupyter=True)
+
+# Transformando em DataFrame
+dados = [(ent.text, ent.label_) for ent in doc.ents]
+df = pd.DataFrame(dados, columns=["Entidade", "Tipo"])
+print(df)
+🔄 Agora com texto em português:
+python
+Copiar
+Editar
+# Baixando modelo de português
+spacy.cli.download("pt_core_news_sm")
+
+# Carregando modelo em português
+nlp_pt = spacy.load("pt_core_news_sm")
+
+# Texto em português
+texto_pt = "Jair Bolsonaro foi presidente do Brasil entre 2019 e 2022."
+
+# Processando
+doc_pt = nlp_pt(texto_pt)
+
+# Exibindo entidades
+for ent in doc_pt.ents:
+    print(ent.text, ent.label_)
+
+# Visualizando
+displacy.render(doc_pt, style="ent", jupyter=True)
+📙 Notebook 3: kpe.ipynb — Extração de Palavras-chave (PKE)
+python
+Copiar
+Editar
+# Instalar PKE e dependências
+!apt-get install -y libxml2-dev libxslt1-dev python-dev
+!pip install git+https://github.com/boudinfl/pke.git
+!python -m nltk.downloader stopwords
+!python -m spacy download en_core_web_sm
+
+# Importações
+import pke
+from nltk.corpus import stopwords
+
+# Criando extractor
+extractor = pke.unsupervised.TfIdf()
+
+# Texto de exemplo salvo como arquivo
+with open("texto.txt", "w") as f:
+    f.write("Natural language processing (NLP) is a field of artificial intelligence that focuses on the interaction between computers and humans through language.")
+
+# Carregando documento
+extractor.load_document(input="texto.txt", language="en", normalization="stemming")
+
+# Parâmetros e extração
+extractor.candidate_selection()
+extractor.candidate_weighting()
+
+# Palavras-chave extraídas
+keyphrases = extractor.get_n_best(n=10)
+print("Palavras-chave extraídas:")
+for frase, score in keyphrases:
+    print(f"{frase} ({score:.4f})")
